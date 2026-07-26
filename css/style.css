@@ -1,0 +1,130 @@
+/* Optimizaciones base para evitar jank y crasheos */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+body {
+    background-color: #FF3E81;
+    color: #FFFFFF;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+}
+
+#liquid-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.65;
+    pointer-events: none;
+    transform: translateZ(0);
+}
+
+.panel {
+    width: 100%;
+    position: relative;
+}
+
+/* --- Premium Bento-Box Cards --- */
+.premium-glass-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    backdrop-filter: blur(40px) saturate(150%);
+    -webkit-backdrop-filter: blur(40px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 4px 24px -1px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateZ(0);
+}
+
+/* will-change solo mientras hay hover real (la única vez que este transform cambia
+   en reposo): con 20+ tarjetas en la página, tenerlo permanente en todas promueve
+   igual número de capas de composición sin necesidad, todo el tiempo. */
+.premium-glass-card:hover {
+    background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.15);
+    transform: translateY(-6px) translateZ(0);
+    box-shadow: 0 12px 40px -4px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.25);
+    will-change: transform;
+}
+
+/* --- Premium Floating Navbar --- */
+#navbar-wrapper { will-change: transform; }
+
+#navbar {
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+    border: 1px solid transparent;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateZ(0);
+}
+
+.floating-nav {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(20px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Utilidades para Animaciones GSAP */
+.zoom-wrapper {
+    transform-origin: center center;
+    display: inline-block;
+    will-change: transform;
+}
+.reveal-text span { display: inline-block; }
+.perspective-container { perspective: 1200px; }
+.preserve-3d { transform-style: preserve-3d; }
+::-webkit-scrollbar { width: 8px; display: none; }
+
+/* Clases de Traducción con Máscara de Recorte */
+/* will-change se activa/desactiva por JS solo durante el barrido de idioma (ver
+   i18n.js): son decenas de elementos en toda la página, dejarlo permanente aquí
+   promovería esa misma cantidad de capas de composición en todo momento por un
+   efecto que solo corre en el clic de cambio de idioma. */
+.i18n-text {
+    display: inline-block; /* Requerido para clip-path perfecto */
+    clip-path: inset(0% 0% 0% 0%);
+}
+
+/* --- Custom Cursor Premium --- */
+@media (pointer: fine) {
+    body, a, button, input, textarea, .glass-card, .premium-glass-card { cursor: none !important; }
+}
+
+#custom-cursor-dot {
+    position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+    background-color: #C8A2FF; border-radius: 50%;
+    transform: translate(-50%, -50%); z-index: 10000; pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease; mix-blend-mode: difference;
+}
+
+#custom-cursor-ring {
+    position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+    border: 2px solid #E7D4FF; border-radius: 50%;
+    transform: translate(-50%, -50%); z-index: 9999; pointer-events: none;
+    will-change: transform;
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, border-color 0.3s ease;
+    mix-blend-mode: difference;
+}
+
+.cursor-hovering #custom-cursor-ring { width: 48px; height: 48px; background-color: #FFFFFF; border-color: transparent; }
+.cursor-hovering #custom-cursor-dot { opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
+
+/* Objetivos pequeños y precisos (ej. la X de cerrar un modal): el anillo casi no
+   crece, para no tapar visualmente un blanco chico y que apuntarle se sienta preciso. */
+.cursor-hovering-tight #custom-cursor-ring { width: 26px; height: 26px; background-color: transparent; border-color: #FFFFFF; }
+.cursor-hovering-tight #custom-cursor-dot { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.app-mockup-container {
+    width: 100%; height: 100%; border-radius: 2.5rem;
+    background-color: transparent; display: flex;
+    flex-direction: column; overflow: hidden; position: relative;
+}
