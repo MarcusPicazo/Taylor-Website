@@ -1,11 +1,15 @@
 /* Optimizaciones base para evitar jank y crasheos */
-/* En móvil (sobre todo iOS Safari), el elemento que realmente scrollea es <html>,
-   no <body> — overflow-x:hidden solo en body no evita el rebote horizontal si algo
-   se sale del ancho aunque sea un poco (ej. los círculos decorativos difuminados,
-   las palabras del espiral 3D). Eso es lo que se sentía como "la pantalla se va a
-   la izquierda y no hay nada": el usuario terminaba viendo esa franja vacía fuera
-   del contenido real. */
-html { overflow-x: hidden; }
+/* El rebote horizontal en móvil ("la pantalla se va a la izquierda y no hay nada")
+   se debía a que algo se sale del ancho aunque sea un poco (círculos decorativos
+   difuminados, palabras del espiral 3D), y el navegador permite hacer rubber-band
+   hacia ese sobrante. overscroll-behavior-x (a diferencia de overflow-x en <html>)
+   bloquea ese rebote sin tocar el modelo de overflow: overflow-x:hidden en <html>
+   fuerza a que overflow-y calculado pase de "visible" a "auto" (así lo define la
+   spec cuando un eje no es visible y el otro sí), y eso convierte a <html> en un
+   contenedor de scroll propio — rompiendo el position:sticky del video con scroll
+   y el pin de ScrollTrigger del espiral, que dependían de que solo la ventana
+   scrolleara. */
+html { overscroll-behavior-x: none; }
 html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
