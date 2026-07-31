@@ -16,7 +16,7 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/tailwind-config.js"></script>
+    <script src="js/tailwind-config.js?v=6"></script>
 
     <!-- Three.js (WebGL) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -29,7 +29,7 @@
     <!-- Chart.js (Gráficas) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body class="antialiased">
 
@@ -256,14 +256,6 @@
             <!-- Canvas visible: aquí se dibuja el frame activo del video -->
             <canvas id="promo-canvas" class="relative z-10 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.45)]"></canvas>
 
-            <!-- Video fuente (nunca se muestra directo; solo decodifica frames). Un solo
-                 archivo con los 4 clips originales fusionados (ver video/promo-full.mp4)
-                 en vez de 4 videos separados: elimina los cortes/saltos que aparecían
-                 justo en las transiciones entre clips. Oculto con opacity-0 + 1px en vez
-                 de display:none: varios navegadores no decodifican frames nuevos de un
-                 <video> con display:none, lo que dejaba el canvas pintando siempre el
-                 mismo frame (o ninguno). -->
-            <video id="promo-clip" class="absolute opacity-0 pointer-events-none w-px h-px overflow-hidden" muted playsinline preload="auto" src="video/promo-full.mp4"></video>
 
             <!-- Textos fijados: uno por clip, se funden de entrada/salida según el
                  progreso de scroll dentro de su propio tramo (nunca aparecen de golpe) -->
@@ -550,7 +542,7 @@
 
                 <div class="text-center premium-glass-card p-12 rounded-[3rem] transform scale-110 border border-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.5)] z-10 bg-white/10">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-taylor-pastel/20 rounded-full blur-[40px] -mr-10 -mt-10 pointer-events-none"></div>
-                    <img src="img/team/valeria-web.png" alt="Valeria Sandoval" loading="lazy" decoding="async" class="w-48 h-60 md:w-52 md:h-64 object-cover object-top rounded-[1.75rem] border border-white/20 shadow-[0_15px_35px_rgba(255,62,129,0.3)] mx-auto mb-8">
+                    <img src="img/team/valeria-web.png?v=2" alt="Valeria Sandoval" loading="lazy" decoding="async" class="w-48 h-60 md:w-52 md:h-64 object-cover object-top rounded-[1.75rem] border border-white/20 shadow-[0_15px_35px_rgba(255,62,129,0.3)] mx-auto mb-8">
                     <h3 class="text-4xl font-bold mb-2 text-white tracking-tight">Valeria Sandoval</h3>
                     <p class="i18n-text text-taylor-pastel font-bold tracking-widest text-xs mb-6 uppercase" data-en="Co-Founder / CEO" data-es="Cofundadora / CEO">Co-Founder / CEO</p>
                     <p class="i18n-text text-white/80 font-light text-sm leading-relaxed mx-auto" data-en="Lead visionary and the authentic voice of female empowerment. Focused on high-stakes investor relations, strategic scaling, and building cross-border B2B alliances for urban safety." data-es="Líder visionaria y voz auténtica del empoderamiento femenino. Enfocada en relaciones con inversionistas de alto nivel, escalamiento estratégico y construcción de alianzas B2B transfronterizas para la seguridad urbana.">Lead visionary and the authentic voice of female empowerment. Focused on high-stakes investor relations, strategic scaling, and building cross-border B2B alliances for urban safety.</p>
@@ -608,19 +600,23 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.92 1.34-1.87 2.68-3.37 2.71-1.47.03-1.94-.87-3.62-.87-1.68 0-2.2.85-3.592.9-1.44.05-2.54-1.45-3.476-2.78-1.89-2.73-3.34-7.71-1.4-11.07.96-1.67 2.68-2.73 4.55-2.76 1.42-.03 2.76.96 3.62.96.86 0 2.48-1.18 4.18-1.01.71.03 2.71.29 4 2.18-.1.06-2.39 1.4-2.36 4.17.03 3.31 2.9 4.41 2.93 4.42z"/></svg>
                     <span class="text-lg">iOS</span>
                 </button>
+                <button type="button" id="btn-windows" onclick="openWindowsModal()" class="w-full sm:w-auto flex items-center gap-3 bg-white/10 border border-white/20 text-white px-10 py-5 rounded-2xl font-bold hover:bg-white/15 transition-colors duration-300 backdrop-blur-md">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8.5v8.5H3V3zm9.5 0H21v8.5h-8.5V3zM3 12.5h8.5V21H3v-8.5zm9.5 0H21V21h-8.5v-8.5z"/></svg>
+                    <span class="text-lg">Windows</span>
+                </button>
             </div>
 
             <!-- Acceso de demostración: probar Taylor sin instalar/registrarse.
                  Rediseñado como tarjetas visuales (icono + texto corto), igual que el
                  resto del sitio, en vez de un solo bloque largo de texto plano. -->
-            <div class="mt-24 text-center gs-up max-w-2xl mx-auto">
+            <div id="demo-access-intro" class="mt-24 text-center max-w-2xl mx-auto">
                 <p class="i18n-text text-taylor-pastel font-bold tracking-widest text-xs mb-3 uppercase" data-en="Try it now" data-es="Pruébala ahora">Pruébala ahora</p>
                 <h3 class="i18n-text text-3xl md:text-4xl font-bold mb-4 text-white tracking-tight" data-en="Explore Taylor before you install." data-es="Explora Taylor antes de instalar.">Explora Taylor antes de instalar.</h3>
                 <p class="i18n-text text-white/60 font-light leading-relaxed" data-en="No signup needed — tap <strong class='text-white'>Demo access</strong> on the login screen and use one of these accounts." data-es="Sin necesidad de registro — toca <strong class='text-white'>Acceso de demostración</strong> en la pantalla de inicio y usa una de estas cuentas.">Sin necesidad de registro — toca <strong class="text-white">Acceso de demostración</strong> en la pantalla de inicio y usa una de estas cuentas.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-10 mb-10 text-left">
-                <div class="premium-glass-card rounded-[2rem] p-8 gs-up">
+            <div id="demo-access-cards" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-10 mb-10 text-left">
+                <div class="premium-glass-card rounded-[2rem] p-8">
                     <div class="text-taylor-pastel mb-5">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
                     </div>
@@ -637,7 +633,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="premium-glass-card rounded-[2rem] p-8 gs-up" style="transition-delay: 0.1s;">
+                <div class="premium-glass-card rounded-[2rem] p-8">
                     <div class="text-taylor-pastel mb-5">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     </div>
@@ -651,24 +647,24 @@
             </div>
 
             <div class="max-w-3xl mx-auto mb-10">
-                <p class="i18n-text text-white/40 font-semibold tracking-widest text-xs uppercase mb-5 text-center gs-up" data-en="What you can try" data-es="Qué puedes probar">Qué puedes probar</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5 gs-up">
+                <p id="demo-access-grid-label" class="i18n-text text-white/40 font-semibold tracking-widest text-xs uppercase mb-5 text-center" data-en="What you can try" data-es="Qué puedes probar">Qué puedes probar</p>
+                <div id="demo-access-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
                         <div class="text-taylor-pastel mb-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
                         <h5 class="i18n-text text-white font-semibold text-sm mb-1" data-en="Request a ride" data-es="Pedir un viaje">Pedir un viaje</h5>
                         <p class="i18n-text text-white/50 font-light text-xs leading-relaxed" data-en="Pick a destination, choose Go, Pro, or Max, and confirm — see the route, price, and driver search." data-es="Elige un destino, escoge Go, Pro o Max, y confirma — verás la ruta, el precio y la búsqueda de conductora.">Elige un destino, escoge Go, Pro o Max, y confirma — verás la ruta, el precio y la búsqueda de conductora.</p>
                     </div>
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5 gs-up" style="transition-delay: 0.1s;">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
                         <div class="text-taylor-pastel mb-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><rect x="1" y="13" width="22" height="6" rx="2"/><circle cx="6.5" cy="19" r="1.5"/><circle cx="17.5" cy="19" r="1.5"/></svg></div>
                         <h5 class="i18n-text text-white font-semibold text-sm mb-1" data-en="Driver mode" data-es="Modo conductora">Modo conductora</h5>
                         <p class="i18n-text text-white/50 font-light text-xs leading-relaxed" data-en="Account → Driver mode, go online, and receive a ride request." data-es="Cuenta → Modo conductora, ponte en línea y recibe una solicitud de viaje.">Cuenta → Modo conductora, ponte en línea y recibe una solicitud de viaje.</p>
                     </div>
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5 gs-up" style="transition-delay: 0.2s;">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
                         <div class="text-taylor-pastel mb-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
                         <h5 class="i18n-text text-white font-semibold text-sm mb-1" data-en="Safety" data-es="Seguridad">Seguridad</h5>
                         <p class="i18n-text text-white/50 font-light text-xs leading-relaxed" data-en="The SOS button, live location sharing, and trusted contacts." data-es="El botón SOS, compartir ubicación en vivo y los contactos de confianza.">El botón SOS, compartir ubicación en vivo y los contactos de confianza.</p>
                     </div>
-                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5 gs-up" style="transition-delay: 0.3s;">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
                         <div class="text-taylor-pastel mb-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
                         <h5 class="i18n-text text-white font-semibold text-sm mb-1" data-en="Language" data-es="Idioma">Idioma</h5>
                         <p class="i18n-text text-white/50 font-light text-xs leading-relaxed" data-en="The app follows your phone's language and can be changed in Account → Settings." data-es="La app sigue el idioma de tu teléfono y se puede cambiar en Cuenta → Configuración.">La app sigue el idioma de tu teléfono y se puede cambiar en Cuenta → Configuración.</p>
@@ -676,7 +672,7 @@
                 </div>
             </div>
 
-            <div class="max-w-3xl mx-auto gs-up">
+            <div id="demo-access-note" class="max-w-3xl mx-auto">
                 <div class="flex items-start gap-3 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-left">
                     <svg class="flex-shrink-0 mt-0.5 text-white/30" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                     <p class="i18n-text text-white/35 font-light text-xs leading-relaxed" data-en="Taylor asks for location permission (to match you with a nearby driver and share your trip with your contacts) and notifications (to update you on your ride status). Every account goes through identity verification. This is a demo build — payments and document verification are simulated and don't process real data." data-es="Taylor pide permisos de ubicación (para asignarte una conductora cercana y compartir tu viaje con tus contactos) y notificaciones (para avisarte del estado del viaje). Cada cuenta pasa por verificación de identidad. Esta es una versión de demostración; los pagos y la verificación con documento están simulados y no procesan datos reales.">Taylor pide permisos de ubicación (para asignarte una conductora cercana y compartir tu viaje con tus contactos) y notificaciones (para avisarte del estado del viaje). Cada cuenta pasa por verificación de identidad. Esta es una versión de demostración; los pagos y la verificación con documento están simulados y no procesan datos reales.</p>
@@ -739,6 +735,52 @@
                 <a href="#" class="js-web-link i18n-text relative block bg-white text-taylor-dark px-8 py-3 rounded-full font-bold text-center hover:scale-105 transition-transform duration-300" data-en="Go to Web Version" data-es="Ir a la Versión Web">Go to Web Version</a>
             </div>
         </div>
+
+        <!-- Modal Windows: panel de escritorio para empresas/escuelas, .zip portable (sin instalador) -->
+        <div id="windows-modal" class="fixed inset-0 z-[200] hidden items-center justify-center px-4" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);" onclick="if(event.target === this) closeWindowsModal();">
+            <div class="premium-glass-card bg-[#1A1A1A]/80 rounded-[2rem] p-8 md:p-10 max-w-md w-full relative overflow-hidden text-left">
+                <span class="absolute -top-4 -right-2 text-9xl font-black text-white/[0.05] leading-none select-none pointer-events-none">W</span>
+                <button onclick="closeWindowsModal()" class="cursor-precise absolute top-3 right-3 w-10 h-10 flex items-center justify-center rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-colors" aria-label="Cerrar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <div class="relative flex items-center gap-2.5 mb-6 text-taylor-pastel">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8.5v8.5H3V3zm9.5 0H21v8.5h-8.5V3zM3 12.5h8.5V21H3v-8.5zm9.5 0H21V21h-8.5v-8.5z"/></svg>
+                    <span class="text-xs font-bold tracking-[0.2em] uppercase text-white/40">Windows</span>
+                </div>
+                <h3 class="i18n-text relative text-2xl font-bold mb-4 text-white" data-en="Business Desktop Panel" data-es="Panel de Escritorio Empresarial">Business Desktop Panel</h3>
+                <p class="i18n-text relative text-white/60 font-light leading-relaxed mb-6" data-en="A desktop app for companies and schools: track your team's rides live, schedule recurring routes, and manage staff. Portable — no installer needed." data-es="Una app de escritorio para empresas y escuelas: da seguimiento en vivo a los viajes de tu equipo, programa rutas recurrentes y gestiona personal. Portable — no necesita instalador.">A desktop app for companies and schools: track your team's rides live, schedule recurring routes, and manage staff. Portable — no installer needed.</p>
+                <div class="relative space-y-3.5 mb-5">
+                    <div class="flex gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-taylor-pastel/15 text-taylor-pastel text-xs font-bold flex items-center justify-center mt-0.5">1</span>
+                        <p class="i18n-text text-white/70 font-light text-sm leading-relaxed" data-en="Tap <strong class='text-white font-medium'>Download for Windows</strong> below and wait for the .zip to download." data-es="Toca <strong class='text-white font-medium'>Descargar para Windows</strong> abajo y espera a que baje el .zip.">Tap <strong class="text-white font-medium">Download for Windows</strong> below and wait for the .zip to download.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-taylor-pastel/15 text-taylor-pastel text-xs font-bold flex items-center justify-center mt-0.5">2</span>
+                        <p class="i18n-text text-white/70 font-light text-sm leading-relaxed" data-en="Unzip the folder, then double-click <strong class='text-white font-medium'>taylor_business_desktop.exe</strong>. No installation — everything it needs is already next to it." data-es="Descomprime la carpeta y haz doble clic en <strong class='text-white font-medium'>taylor_business_desktop.exe</strong>. No requiere instalación — todo lo que necesita ya está junto al archivo.">Unzip the folder, then double-click <strong class="text-white font-medium">taylor_business_desktop.exe</strong>. No installation — everything it needs is already next to it.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-taylor-pastel/15 text-taylor-pastel text-xs font-bold flex items-center justify-center mt-0.5">3</span>
+                        <p class="i18n-text text-white/70 font-light text-sm leading-relaxed" data-en="If Windows shows &quot;Windows protected your PC&quot;, click <strong class='text-white font-medium'>More info</strong> → <strong class='text-white font-medium'>Run anyway</strong>. Normal for apps not yet code-signed." data-es="Si Windows muestra &quot;Windows protegió tu PC&quot;, haz clic en <strong class='text-white font-medium'>Más información</strong> → <strong class='text-white font-medium'>Ejecutar de todas formas</strong>. Es normal en apps que aún no tienen firma de código.">If Windows shows "Windows protected your PC", click <strong class="text-white font-medium">More info</strong> → <strong class="text-white font-medium">Run anyway</strong>. Normal for apps not yet code-signed.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-taylor-pastel/15 text-taylor-pastel text-xs font-bold flex items-center justify-center mt-0.5">4</span>
+                        <p class="i18n-text text-white/70 font-light text-sm leading-relaxed" data-en="Log in with the company code and password below." data-es="Inicia sesión con el código de empresa y la contraseña de abajo.">Log in with the company code and password below.</p>
+                    </div>
+                </div>
+                <div class="relative flex items-center justify-between gap-3 bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 mb-3">
+                    <span class="i18n-text text-white/40 text-[0.65rem] font-semibold uppercase tracking-wider" data-en="Company code" data-es="Código de empresa">Código de empresa</span>
+                    <span class="text-white font-mono text-sm">Taylor123</span>
+                </div>
+                <div class="relative flex items-center justify-between gap-3 bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 mb-6">
+                    <span class="i18n-text text-white/40 text-[0.65rem] font-semibold uppercase tracking-wider" data-en="Password" data-es="Contraseña">Contraseña</span>
+                    <span class="text-white font-mono text-sm">Taylor123</span>
+                </div>
+                <div class="relative bg-white/5 border border-white/10 rounded-2xl px-4 py-3 mb-6">
+                    <p class="i18n-text text-white/50 text-xs font-light leading-relaxed" data-en="This is a demo build running on simulated data, not a production backend — the rides, staff, and transactions you see are sample data." data-es="Esta es una versión de demostración con datos simulados, no un backend de producción — los viajes, el personal y las transacciones que ves son datos de ejemplo.">This is a demo build running on simulated data, not a production backend — the rides, staff, and transactions you see are sample data.</p>
+                </div>
+                <a href="#" class="js-windows-link i18n-text relative block bg-white text-taylor-dark px-8 py-3 rounded-full font-bold text-center hover:scale-105 transition-transform duration-300" data-en="Download for Windows" data-es="Descargar para Windows">Download for Windows</a>
+            </div>
+        </div>
     </section>
 
     <footer class="bg-transparent pb-16 pt-16 text-center relative z-[70]">
@@ -751,14 +793,14 @@
         <p class="text-white/30 text-xs font-light tracking-wide">&copy; 2026 Taylor Mobility Inc.</p>
     </footer>
 
-    <script src="js/i18n.js"></script>
-    <script src="js/background.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/cursor.js"></script>
-    <script src="js/waitlist.js"></script>
-    <script src="js/download.js"></script>
-    <script src="js/promo-scroll.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/i18n.js?v=6"></script>
+    <script src="js/background.js?v=6"></script>
+    <script src="js/animations.js?v=6"></script>
+    <script src="js/charts.js?v=6"></script>
+    <script src="js/cursor.js?v=6"></script>
+    <script src="js/waitlist.js?v=6"></script>
+    <script src="js/download.js?v=6"></script>
+    <script src="js/promo-scroll.js?v=6"></script>
+    <script src="js/main.js?v=6"></script>
 </body>
 </html>

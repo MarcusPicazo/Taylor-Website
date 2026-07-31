@@ -38,6 +38,11 @@ class RangeHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-Length", str(file_len))
             self.send_header("Accept-Ranges", "bytes")
             self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
+            # Servidor de desarrollo: los assets se sobreescriben todo el tiempo bajo la
+            # misma URL (mismo nombre de archivo, contenido nuevo). Sin esto el navegador
+            # sigue mostrando la versión vieja en caché tras editar un archivo, dando la
+            # falsa impresión de que el cambio no se aplicó (o de que quedó un "vestigio").
+            self.send_header("Cache-Control", "no-store")
             self.end_headers()
             return f
 
@@ -69,6 +74,7 @@ class RangeHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(end - start + 1))
         self.send_header("Accept-Ranges", "bytes")
         self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
 
         f.seek(start)

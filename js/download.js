@@ -4,12 +4,13 @@
 // el botón correspondiente se muestra deshabilitado con un aviso "Próximamente".
 const ANDROID_APK_URL = 'app/taylor-v0.1.0.apk';
 const WEB_APP_URL = null;
+const WINDOWS_ZIP_URL = 'app/taylor-business-desktop-demo.zip';
 
 const wireDownloadLinks = () => {
-    const apply = (el, url) => {
+    const apply = (el, url, filename) => {
         if (url) {
             el.href = url;
-            el.setAttribute('download', 'taylor.apk');
+            if (filename) el.setAttribute('download', filename);
             el.removeAttribute('aria-disabled');
             el.classList.remove('opacity-40', 'pointer-events-none');
             const badge = el.querySelector('.js-soon-badge');
@@ -28,8 +29,9 @@ const wireDownloadLinks = () => {
             }
         }
     };
-    document.querySelectorAll('.js-apk-link').forEach(el => apply(el, ANDROID_APK_URL));
+    document.querySelectorAll('.js-apk-link').forEach(el => apply(el, ANDROID_APK_URL, 'taylor.apk'));
     document.querySelectorAll('.js-web-link').forEach(el => apply(el, WEB_APP_URL));
+    document.querySelectorAll('.js-windows-link').forEach(el => apply(el, WINDOWS_ZIP_URL, 'taylor-business-desktop-demo.zip'));
 };
 
 const openModal = (modal) => {
@@ -55,10 +57,13 @@ const openAppleModal = () => openModal(document.getElementById('apple-modal'));
 const closeAppleModal = () => closeModal(document.getElementById('apple-modal'));
 const openAndroidModal = () => openModal(document.getElementById('android-modal'));
 const closeAndroidModal = () => closeModal(document.getElementById('android-modal'));
+const openWindowsModal = () => openModal(document.getElementById('windows-modal'));
+const closeWindowsModal = () => closeModal(document.getElementById('windows-modal'));
 
 window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeAppleModal();
         closeAndroidModal();
+        closeWindowsModal();
     }
 });

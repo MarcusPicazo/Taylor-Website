@@ -1,4 +1,11 @@
 /* Optimizaciones base para evitar jank y crasheos */
+/* En móvil (sobre todo iOS Safari), el elemento que realmente scrollea es <html>,
+   no <body> — overflow-x:hidden solo en body no evita el rebote horizontal si algo
+   se sale del ancho aunque sea un poco (ej. los círculos decorativos difuminados,
+   las palabras del espiral 3D). Eso es lo que se sentía como "la pantalla se va a
+   la izquierda y no hay nada": el usuario terminaba viendo esa franja vacía fuera
+   del contenido real. */
+html { overflow-x: hidden; }
 html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -18,8 +25,12 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    /* 100% en vez de 100vw/100vh: en un elemento fixed ambos resuelven contra el
+       viewport, pero vw/vh en móvil se calculan sobre el "layout viewport" (que
+       puede ser más ancho que la pantalla visible si algo más en la página se
+       desborda), mientras que % no arrastra esa ambigüedad. */
+    width: 100%;
+    height: 100%;
     z-index: -1;
     opacity: 0.65;
     pointer-events: none;

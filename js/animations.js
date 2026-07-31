@@ -143,6 +143,65 @@ const initRestTeamRow = () => {
     });
 };
 
+// Reveal a medida para "Explore Taylor before you install": la intro sube en cascada,
+// las 2 tarjetas de acceso entran con un giro 3D (como una tarjeta volteándose boca
+// arriba) alternando el lado de origen, y la grilla "qué puedes probar" cae en cascada
+// diagonal, cada celda desde la esquina que le corresponde en el layout 2x2 — más vivo
+// que el fade genérico del resto del sitio.
+const initDemoAccess = () => {
+    const intro = document.getElementById('demo-access-intro');
+    const cardsRow = document.getElementById('demo-access-cards');
+    const gridLabel = document.getElementById('demo-access-grid-label');
+    const grid = document.getElementById('demo-access-grid');
+    const note = document.getElementById('demo-access-note');
+    if (!intro || !cardsRow || !grid || !note) return;
+
+    gsap.fromTo([...intro.children], { opacity: 0, y: 36 }, {
+        opacity: 1, y: 0, ease: "power2.out", stagger: 0.08, duration: 1,
+        scrollTrigger: { trigger: intro, start: "top bottom-=40", end: "top 55%", scrub: 0.6 }
+    });
+
+    // rotateY vía transformPerspective (propiedad especial de GSAP): da profundidad 3D
+    // por elemento sin necesitar que el padre tenga perspective en CSS.
+    const cardsTl = gsap.timeline({
+        scrollTrigger: { trigger: cardsRow, start: "top bottom-=30", end: "top 50%", scrub: 0.6 }
+    });
+    [...cardsRow.children].forEach((card, i) => {
+        cardsTl.fromTo(card,
+            { opacity: 0, y: 20, rotateY: i % 2 === 0 ? -55 : 55, transformPerspective: 800 },
+            { opacity: 1, y: 0, rotateY: 0, ease: "power2.out", duration: 1 },
+            i * 0.12
+        );
+    });
+
+    if (gridLabel) {
+        gsap.fromTo(gridLabel, { opacity: 0, y: 18 }, {
+            opacity: 1, y: 0, ease: "power2.out",
+            scrollTrigger: { trigger: grid, start: "top bottom-=20", end: "top 75%", scrub: 0.6 }
+        });
+    }
+
+    // Offsets pensados para el layout 2x2 real (sm:grid-cols-2): cada celda entra desde
+    // su propia esquina (arriba-izq, arriba-der, abajo-izq, abajo-der).
+    const corners = [[-36, -26], [36, -26], [-36, 26], [36, 26]];
+    const tilesTl = gsap.timeline({
+        scrollTrigger: { trigger: grid, start: "top bottom-=10", end: "top 40%", scrub: 0.6 }
+    });
+    [...grid.children].forEach((tile, i) => {
+        const [x, y] = corners[i % corners.length];
+        tilesTl.fromTo(tile,
+            { opacity: 0, x, y, scale: 0.86 },
+            { opacity: 1, x: 0, y: 0, scale: 1, ease: "back.out(1.6)", duration: 1 },
+            i * 0.1
+        );
+    });
+
+    gsap.fromTo(note, { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, ease: "power2.out",
+        scrollTrigger: { trigger: note, start: "top bottom-=20", end: "top 80%", scrub: 0.6 }
+    });
+};
+
 // --- 4. GSAP ANIMATIONS ---
 const initGSAP = () => {
     gsap.registerPlugin(ScrollTrigger);
@@ -164,6 +223,7 @@ const initGSAP = () => {
     initFailedModelCard();
     initCoreThree();
     initRestTeamRow();
+    initDemoAccess();
 
     initSpiralText();
     if(document.getElementById('spiral-container')) {
