@@ -1,15 +1,4 @@
 /* Optimizaciones base para evitar jank y crasheos */
-/* El rebote horizontal en móvil ("la pantalla se va a la izquierda y no hay nada")
-   se debía a que algo se sale del ancho aunque sea un poco (círculos decorativos
-   difuminados, palabras del espiral 3D), y el navegador permite hacer rubber-band
-   hacia ese sobrante. overscroll-behavior-x (a diferencia de overflow-x en <html>)
-   bloquea ese rebote sin tocar el modelo de overflow: overflow-x:hidden en <html>
-   fuerza a que overflow-y calculado pase de "visible" a "auto" (así lo define la
-   spec cuando un eje no es visible y el otro sí), y eso convierte a <html> en un
-   contenedor de scroll propio — rompiendo el position:sticky del video con scroll
-   y el pin de ScrollTrigger del espiral, que dependían de que solo la ventana
-   scrolleara. */
-html { overscroll-behavior-x: none; }
 html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -23,6 +12,14 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: none;
+    /* Rebote horizontal en móvil ("la pantalla se va a la izquierda y no hay
+       nada"): algo se sale del ancho aunque sea un poco (círculos decorativos
+       difuminados, palabras del espiral 3D) y el navegador permitía rebotar
+       hacia ese sobrante. Esto se agrega en <body> junto al overscroll-behavior-y
+       que ya estaba — no en <html> — para no tocar el modelo de overflow de la
+       raíz: hacerlo en <html> rompía el position:sticky del video, el manifiesto
+       y el espiral, y además se sentía distinto al scroll original. */
+    overscroll-behavior-x: none;
 }
 
 #liquid-canvas {
