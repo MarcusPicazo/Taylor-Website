@@ -8,11 +8,13 @@ const initCursor = () => {
     // que escribir el transform del punto en cada evento es trabajo de sobra que nunca
     // llega a pintarse. El punto se escribe una sola vez por frame, igual que el anillo.
     window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    // Menos retraso que antes (0.15 -> 0.32): el anillo alcanza al puntero real más
-    // rápido, así se siente preciso en vez de ir siempre un paso atrás.
+    // Menos retraso que antes (0.15 -> 0.32 -> 0.45): el anillo alcanza al puntero
+    // real más rápido en cada paso, así se siente pegado a la mano en vez de un
+    // paso atrás — el punto ya sigue exacto, esto es solo para que el anillo no
+    // se perciba como el elemento "impreciso" al apuntar.
     gsap.ticker.add(() => {
         gsap.set(dot, { x: mouseX, y: mouseY });
-        ringX += (mouseX - ringX) * 0.32; ringY += (mouseY - ringY) * 0.32; gsap.set(ring, { x: ringX, y: ringY });
+        ringX += (mouseX - ringX) * 0.45; ringY += (mouseY - ringY) * 0.45; gsap.set(ring, { x: ringX, y: ringY });
     });
     document.querySelectorAll('a, button, .premium-glass-card').forEach(el => {
         if (el.classList.contains('cursor-precise')) return; // manejado aparte, con un anillo que casi no crece

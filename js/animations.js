@@ -48,7 +48,7 @@ const initStatementZoom = () => {
     const zoomWrapper = document.querySelector('.zoom-wrapper');
     gsap.set(zoomWrapper, { clearProps: "scale,opacity" });
 
-    const tl = gsap.timeline({ scrollTrigger: { trigger: '#statement', start: "top top", end: "bottom bottom", scrub: 1 } });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: '#statement', start: "top top", end: "bottom bottom", scrub: 1.3 } });
     tl.to('#statement-text span span', { opacity: 1, transform: 'translateY(0px) scale(1)', stagger: 0.02, ease: "power2.out", duration: 3 });
     tl.to(zoomWrapper, { scale: 1, duration: 1.5 });
     // Escala y opacidad van en tweens separados que arrancan juntos: la escala crece
@@ -228,10 +228,13 @@ const initGSAP = () => {
     initSpiralText();
     if(document.getElementById('spiral-container')) {
         // Forma/recorrido originales del monolito (el desplazamiento vertical es
-        // -3000/-2000, scrub subido a 1.8 para que se sienta más soft de ida y vuelta).
+        // -3000/-2000). scrub subido de nuevo (1.8 -> 2.4): tras recalibrar el
+        // resto del scroll (duración de Lenis, easing) el espiral volvía a sentirse
+        // menos soft en comparación — más scrub = más retraso/inercia antes de que
+        // la rotación alcance al scroll real.
         gsap.to('#spiral-container', {
             rotationY: -360 * 2, y: window.innerWidth < 768 ? -2000 : -3000, ease: "none",
-            scrollTrigger: { trigger: "#spiral-section", start: "top top", end: "bottom bottom", scrub: 1.8 }
+            scrollTrigger: { trigger: "#spiral-section", start: "top top", end: "bottom bottom", scrub: 2.4 }
         });
     }
 
