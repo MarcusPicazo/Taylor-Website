@@ -14,14 +14,18 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        duration: 1.8,
+        // 1.8 fue demasiado: el scroll tardaba tanto en alcanzar el objetivo que
+        // se sentía flotante e impreciso (dejabas de scrolear y seguía moviéndose
+        // más de lo esperado, difícil de parar justo donde querías). 1.1 mantiene
+        // la respuesta pegada al input real. wheelMultiplier también se quita
+        // (vuelve al 1 por defecto) — reducirlo sumaba a esa sensación de que el
+        // scroll "no hacía lo que se le pedía".
+        duration: 1.1,
         // Cúbica en vez de exponencial: la exponencial arrancaba casi de golpe
         // (velocidad máxima desde el primer instante) y solo suavizaba el final,
-        // lo que se sentía rápido/brusco pese a la desaceleración. La cúbica
-        // acelera y frena de forma gradual en los dos extremos — más lenta y
-        // placentera de punta a punta, combinada con una duración mayor.
+        // lo que se sentía brusco pese a la desaceleración. La cúbica acelera y
+        // frena de forma gradual en los dos extremos.
         easing: (t) => 1 - Math.pow(1 - t, 3),
-        wheelMultiplier: 0.85,
         direction: 'vertical', gestureDirection: 'vertical', smooth: true
     })
     lenis.on('scroll', () => { if (!suppressScrollTriggerUpdates) ScrollTrigger.update(); })
