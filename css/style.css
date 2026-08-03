@@ -115,7 +115,14 @@ body {
     position: fixed; top: 0; left: 0; width: 8px; height: 8px;
     background-color: #C8A2FF; border-radius: 50%;
     transform: translate(-50%, -50%); z-index: 10000; pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease; mix-blend-mode: difference;
+    /* Sin transition en transform: el punto se mueve 1:1 con el mouse, un frame
+       de JS por movimiento (gsap.set, sin lerp). Con "transform" en la lista de
+       transition, cada una de esas actualizaciones por frame quedaba compitiendo
+       con una animación CSS de 0.2s que nunca alcanzaba a terminar antes de que
+       llegara el siguiente frame — el punto quedaba a la deriva, separándose del
+       anillo en vez de seguir la posición real del mouse. El anillo nunca tuvo
+       este problema (su transition nunca incluyó transform). */
+    transition: opacity 0.2s ease; mix-blend-mode: difference;
 }
 
 #custom-cursor-ring {

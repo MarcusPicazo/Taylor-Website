@@ -14,13 +14,12 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        // 1.8 fue demasiado: el scroll tardaba tanto en alcanzar el objetivo que
-        // se sentía flotante e impreciso (dejabas de scrolear y seguía moviéndose
-        // más de lo esperado, difícil de parar justo donde querías). 1.1 mantiene
-        // la respuesta pegada al input real. wheelMultiplier también se quita
-        // (vuelve al 1 por defecto) — reducirlo sumaba a esa sensación de que el
-        // scroll "no hacía lo que se le pedía".
-        duration: 1.1,
+        // 1.8 fue demasiado (flotante, impreciso). 1.1 se quedó corto para gestos
+        // fuertes de scroll (rueda/trackpad con mucho delta): sin nada que frene
+        // esa entrada, se sentía rápido e impreciso otra vez, solo que en la
+        // dirección contraria. 1.2 es el default recomendado de Lenis — punto
+        // medio entre las dos versiones anteriores, ya probado por la librería.
+        duration: 1.2,
         // Cúbica en vez de exponencial: la exponencial arrancaba casi de golpe
         // (velocidad máxima desde el primer instante) y solo suavizaba el final,
         // lo que se sentía brusco pese a la desaceleración. La cúbica acelera y
