@@ -14,17 +14,19 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        // 1.8 fue demasiado (flotante, impreciso). 1.1 se quedó corto para gestos
-        // fuertes de scroll (rueda/trackpad con mucho delta): sin nada que frene
-        // esa entrada, se sentía rápido e impreciso otra vez, solo que en la
-        // dirección contraria. 1.2 es el default recomendado de Lenis — punto
-        // medio entre las dos versiones anteriores, ya probado por la librería.
-        duration: 1.2,
-        // Cúbica en vez de exponencial: la exponencial arrancaba casi de golpe
-        // (velocidad máxima desde el primer instante) y solo suavizaba el final,
-        // lo que se sentía brusco pese a la desaceleración. La cúbica acelera y
-        // frena de forma gradual en los dos extremos.
-        easing: (t) => 1 - Math.pow(1 - t, 3),
+        // duration+easing (lo que había) anima cada scroll hacia su objetivo en un
+        // tiempo FIJO sin importar la distancia — un scroll cortito y uno largo
+        // tardan lo mismo en asentarse, lo que hace que la velocidad PERCIBIDA
+        // varíe todo el tiempo según qué tan lejos se scrolea cada vez (justo el
+        // "a veces rápido, a veces lento" reportado). Revisé el código fuente de
+        // Lenis: si "duration" está presente, "lerp" se ignora por completo — no
+        // se pueden combinar, hay que elegir uno. lerp anima frame a frame
+        // proporcional a la distancia restante (current += (target-current)*lerp),
+        // así que la velocidad escala solo con la distancia real y no con un
+        // tiempo fijo, y al soltar el scroll converge en pocos frames en vez de
+        // seguir "avanzando solo" durante el tiempo fijo que faltara. 0.1 es el
+        // valor por defecto de la propia librería.
+        lerp: 0.1,
         direction: 'vertical', gestureDirection: 'vertical', smooth: true
     })
     lenis.on('scroll', () => { if (!suppressScrollTriggerUpdates) ScrollTrigger.update(); })
