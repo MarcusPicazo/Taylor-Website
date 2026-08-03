@@ -14,8 +14,14 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        duration: 1.8,
+        // Cúbica en vez de exponencial: la exponencial arrancaba casi de golpe
+        // (velocidad máxima desde el primer instante) y solo suavizaba el final,
+        // lo que se sentía rápido/brusco pese a la desaceleración. La cúbica
+        // acelera y frena de forma gradual en los dos extremos — más lenta y
+        // placentera de punta a punta, combinada con una duración mayor.
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+        wheelMultiplier: 0.85,
         direction: 'vertical', gestureDirection: 'vertical', smooth: true
     })
     lenis.on('scroll', () => { if (!suppressScrollTriggerUpdates) ScrollTrigger.update(); })
