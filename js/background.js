@@ -14,12 +14,19 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        // De vuelta a la configuración original de antes de esta ronda de ajustes
-        // (duration 1.2 + esta curva exponencial): tras varias vueltas (1.8, cúbica,
-        // 1.1, lerp 0.1...) sin acertar, se pidió explícitamente recuperar el
-        // scroll original en vez de seguir afinando a ciegas.
+        // Config original (duration 1.2 + esta curva exponencial). Lo nuevo es
+        // normalizeWheel: probando en trackpad (no mouse de rueda), cada gesto ya
+        // trae su propio momentum generado por el sistema operativo — una serie de
+        // eventos "wheel" con delta decreciente después de levantar los dedos. Sin
+        // normalizeWheel, un delta grande de un swipe rápido entra sin tope y Lenis
+        // lo suaviza ENCIMA del momentum que el propio trackpad ya venía aplicando:
+        // dos capas de inercia distintas sumándose, justo el "a veces rápido, a
+        // veces lento, sigue avanzando aunque ya paré" reportado. normalizeWheel
+        // limita cada evento individual a un rango fijo (±100) antes de que Lenis
+        // lo procese, así ningún swipe fuerte mete un salto desproporcionado.
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        normalizeWheel: true,
         direction: 'vertical', gestureDirection: 'vertical', smooth: true
     })
     lenis.on('scroll', () => { if (!suppressScrollTriggerUpdates) ScrollTrigger.update(); })
