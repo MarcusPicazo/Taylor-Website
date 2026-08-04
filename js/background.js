@@ -14,19 +14,12 @@ let suppressScrollTriggerUpdates = false;
 
 const initLenis = () => {
     const lenis = new Lenis({
-        // duration+easing (lo que había) anima cada scroll hacia su objetivo en un
-        // tiempo FIJO sin importar la distancia — un scroll cortito y uno largo
-        // tardan lo mismo en asentarse, lo que hace que la velocidad PERCIBIDA
-        // varíe todo el tiempo según qué tan lejos se scrolea cada vez (justo el
-        // "a veces rápido, a veces lento" reportado). Revisé el código fuente de
-        // Lenis: si "duration" está presente, "lerp" se ignora por completo — no
-        // se pueden combinar, hay que elegir uno. lerp anima frame a frame
-        // proporcional a la distancia restante (current += (target-current)*lerp),
-        // así que la velocidad escala solo con la distancia real y no con un
-        // tiempo fijo, y al soltar el scroll converge en pocos frames en vez de
-        // seguir "avanzando solo" durante el tiempo fijo que faltara. 0.1 es el
-        // valor por defecto de la propia librería.
-        lerp: 0.1,
+        // De vuelta a la configuración original de antes de esta ronda de ajustes
+        // (duration 1.2 + esta curva exponencial): tras varias vueltas (1.8, cúbica,
+        // 1.1, lerp 0.1...) sin acertar, se pidió explícitamente recuperar el
+        // scroll original en vez de seguir afinando a ciegas.
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         direction: 'vertical', gestureDirection: 'vertical', smooth: true
     })
     lenis.on('scroll', () => { if (!suppressScrollTriggerUpdates) ScrollTrigger.update(); })
